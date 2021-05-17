@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "./temp",
     "baseUrl": "src",
     "sourceMap": true,
     "declaration": false,
@@ -17,7 +17,9 @@
       "dom"
     ],
     "paths": {
-      "jsgantt-improved": [ "dist/jsgantt-improved" ]
+      "jsgantt-improved": [
+        "dist/jsgantt-improved"
+      ]
     }
   },
   "exclude": [
