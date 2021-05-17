@@ -214,7 +214,7 @@ export const GanttChart = function (pDiv, pFormat) {
       }
     });
     return gListLbl;
-  }
+  };
 
   this.drawListBody = function (vLeftHeader) {
     let vTmpContentTabOuterWrapper = newNode(vLeftHeader, 'div', null, 'gtasktableouterwrapper');
@@ -264,8 +264,8 @@ export const GanttChart = function (pDiv, pFormat) {
           this.vTaskList[i].setGroupSpan(vTmpSpan);
           addFolderListeners(this, vTmpSpan, vID);
 
-          const divTask = document.createElement('span')
-          divTask.innerHTML = '\u00A0' + this.vTaskList[i].getName()
+          const divTask = document.createElement('span');
+          divTask.innerHTML = '\u00A0' + this.vTaskList[i].getName();
           vTmpDiv.appendChild(divTask);
           // const text = makeInput(this.vTaskList[i].getName(), this.vEditable, 'text');
           // vTmpDiv.appendChild(document.createNode(text));
@@ -298,7 +298,7 @@ export const GanttChart = function (pDiv, pFormat) {
 
       let totalColumns = this.getColumnOrder()
         .filter(column => this[column] == 1 || column === 'vAdditionalHeaders')
-        .length
+        .length;
       let vTmpRow = newNode(vTmpContentTBody, 'tr', this.vDivId + 'child_', 'gname ');
       // this.vTaskList[i].setListChildRow(vTmpRow);
       let vTmpCell = newNode(vTmpRow, 'td', null, 'gtasknolist', '', null, null, null, totalColumns);
@@ -314,7 +314,7 @@ export const GanttChart = function (pDiv, pFormat) {
 
     this.getColumnOrder().forEach(column => {
       if (this[column] == 1 || column === 'vAdditionalHeaders') {
-        draw_bottom(column, vTmpRow, this.vAdditionalHeaders)
+        draw_bottom(column, vTmpRow, this.vAdditionalHeaders);
       }
     });
 
@@ -327,7 +327,7 @@ export const GanttChart = function (pDiv, pFormat) {
       vNumRows,
       vTmpContentTabWrapper
     };
-  }
+  };
 
   /**
    *
@@ -496,8 +496,8 @@ export const GanttChart = function (pDiv, pFormat) {
 
     vTmpDiv = newNode(vRightHeader, 'div', null, 'glabelfooter');
 
-    return { gChartLbl, vTaskLeftPx, vSingleCell, vDateRow, vRightHeader, vNumCols }
-  }
+    return { gChartLbl, vTaskLeftPx, vSingleCell, vDateRow, vRightHeader, vNumCols };
+  };
 
   /**
    *
@@ -579,7 +579,7 @@ export const GanttChart = function (pDiv, pFormat) {
 
         vCaptClass = 'gmilecaption';
         if (!vSingleCell && !vComb) {
-          this.drawColsChart(vNumCols, vTmpRow, taskCellWidth, vMinDate, vMaxDate)
+          this.drawColsChart(vNumCols, vTmpRow, taskCellWidth, vMinDate, vMaxDate);
         }
       }
       else {
@@ -715,8 +715,8 @@ export const GanttChart = function (pDiv, pFormat) {
       vTmpTFoot.appendChild(vDateRow.cloneNode(true));
     }
 
-    return { vRightTable }
-  }
+    return { vRightTable };
+  };
 
   this.drawColsChart = function (vNumCols, vTmpRow, taskCellWidth, pStartDate = null, pEndDate = null) {
     let columnCurrentDay = null;
@@ -746,7 +746,7 @@ export const GanttChart = function (pDiv, pFormat) {
       }
       newNode(vTmpRow, 'td', null, vCellFormat, '\u00A0\u00A0', taskCellWidth);
     }
-  }
+  };
 
   /**
    *
@@ -813,7 +813,7 @@ export const GanttChart = function (pDiv, pFormat) {
      * CHART GRID
      */
     const { vRightTable } = this.drawCharBody(vTaskLeftPx, vTmpContentTabWrapper, gChartLbl, gListLbl,
-      vMinDate, vMaxDate, vSingleCell, vNumCols, vColWidth, vDateRow)
+      vMinDate, vMaxDate, vSingleCell, vNumCols, vColWidth, vDateRow);
 
     if (this.vDebug) {
       const ad = new Date();
@@ -879,9 +879,13 @@ export const GanttChart = function (pDiv, pFormat) {
       this.getChartBody().scrollLeft = vScrollPx;
     }
 
-    if (vMinDate.getTime() <= (new Date()).getTime() && vMaxDate.getTime() >= (new Date()).getTime()) {
+    if (vMinDate.getTime() <= (new Date(this.getCurDay())).getTime() && vMaxDate.getTime() >= (new Date(this.getCurDay())).getTime()) {
+      this.vTodayPx = getOffset(vMinDate, new Date(this.getCurDay()), vColWidth, this.vFormat, this.vShowWeekends);
+    } else if (vMinDate.getTime() <= (new Date()).getTime() && vMaxDate.getTime() >= (new Date()).getTime()) {
       this.vTodayPx = getOffset(vMinDate, new Date(), vColWidth, this.vFormat, this.vShowWeekends);
-    } else this.vTodayPx = -1;
+    } else {
+      this.vTodayPx = -1;
+    }
 
     // DEPENDENCIES: Draw lines of Dependencies
     let bdd;
@@ -919,12 +923,12 @@ export const GanttChart = function (pDiv, pFormat) {
     updateGridHeaderWidth(this);
     this.chartRowDateToX = function (date) {
       return getOffset(vMinDate, date, vColWidth, this.vFormat, this.vShowWeekends);
-    }
+    };
 
     if (this.vEvents && this.vEvents.afterDraw) {
-      this.vEvents.afterDraw()
+      this.vEvents.afterDraw();
     }
-  }
+  };
 
   if (this.vDiv && this.vDiv.nodeName && this.vDiv.nodeName.toLowerCase() == 'div') this.vDivId = this.vDiv.id;
 }; //GanttChart

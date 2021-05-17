@@ -73,7 +73,7 @@ export const TaskItemObject = function (object) {
     object.pBarText,
     object
   );
-}
+};
 
 export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRes, pComp, pGroup, pParent, pOpen,
   pDepend, pCaption, pNotes, pGantt, pCost = null, pPlanStart = null, pPlanEnd = null, pDuration = null, pBarText = null, pDataObject = null) {
@@ -94,7 +94,7 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
   let vMile = parseInt(document.createTextNode(pMile).data);
   let vRes = document.createTextNode(pRes).data;
   let vComp = parseFloat(document.createTextNode(pComp).data);
-  let vCost = parseInt(document.createTextNode(pCost).data)
+  let vCost = parseInt(document.createTextNode(pCost).data);
   let vGroup = parseInt(document.createTextNode(pGroup).data);
   let vDataObject = pDataObject;
   let vCompVal;
@@ -191,7 +191,7 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
 
   this.getID = function () { return vID; };
   this.getOriginalID = function () { return _id; };
-  this.getGantt = function () { return vGantt; }
+  this.getGantt = function () { return vGantt; };
   this.getName = function () { return vName; };
   this.getStart = function () {
     if (vStart) return vStart;
@@ -205,9 +205,9 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
     if (vEnd) return vEnd;
     else if (vPlanEnd) return vPlanEnd;
     else if (vStart && vDuration) {
-      let date = new Date(vStart)
-      const vUnits = vDuration.split(' ')
-      const value = parseInt(vUnits[0])
+      let date = new Date(vStart);
+      const vUnits = vDuration.split(' ');
+      const value = parseInt(vUnits[0]);
       switch (vUnits[1]) {
         case 'hour': date.setMinutes(date.getMinutes() + (value * 60)); break;
         case 'day': date.setMinutes(date.getMinutes() + (value * 60 * 24)); break;
@@ -215,7 +215,7 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
         case 'month': date.setMonth(date.getMonth() + (value)); break;
         case 'quarter': date.setMonth(date.getMonth() + (value * 3)); break;
       }
-      return date
+      return date;
     }
     else return new Date();
   };
@@ -240,7 +240,7 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
   this.getCaption = function () { if (vCaption) return vCaption; else return ''; };
   this.getResource = function () { if (vRes) return vRes; else return '\u00A0'; };
   this.getCompVal = function () { if (vComp) return vComp; else if (vCompVal) return vCompVal; else return 0; };
-  this.getCompStr = function () { if (vComp) return vComp + '%'; else if (vCompVal) return vCompVal + '%'; else return ''; };
+  this.getCompStr = function () { if (vComp) return vComp + '%'; else if (vCompVal) return vCompVal + '%'; else return '0%'; };
   this.getCompRestStr = function () { if (vComp) return (100 - vComp) + '%'; else if (vCompVal) return (100 - vCompVal) + '%'; else return ''; };
   this.getNotes = function () { return vNotes; };
   this.getSortIdx = function () { return vSortIdx; };
@@ -252,7 +252,7 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
     else if (!vEnd && !vStart && vPlanStart && vPlanEnd) {
       return calculateVDuration(pFormat, pLang, this.getPlanStart(), this.getPlanEnd());
     }
-    else if (!vEnd && vDuration) { return vDuration }
+    else if (!vEnd && vDuration) { return vDuration; }
     else {
       vDuration = calculateVDuration(pFormat, pLang, this.getStart(), this.getEnd());
     }
@@ -396,8 +396,8 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
       pCost: vCost,
       pGroup: vGroup,
       pDataObjec: vDataObject
-    }
-  }
+    };
+  };
 };
 
 /**
@@ -416,7 +416,7 @@ export const createTaskInfo = function (pTask, templateStrOrFn = null) {
   const setupTemplate = template => {
     vTaskInfo.innerHTML = "";
     if (template) {
-      let allData = pTask.getAllData()
+      let allData = pTask.getAllData();
       internalProperties.forEach(key => {
         let lang;
         if (internalPropertiesLang[key]) {
@@ -424,7 +424,7 @@ export const createTaskInfo = function (pTask, templateStrOrFn = null) {
         }
 
         if (!lang) {
-          lang = key
+          lang = key;
         }
         const val = allData[key];
 
@@ -515,7 +515,7 @@ export const AddTaskItemObject = function (object) {
     object.pGantt = this;
   }
   return this.AddTaskItem(TaskItemObject(object));
-}
+};
 
 export const RemoveTaskItem = function (pID) {
   // simply mark the task for removal at this point - actually remove it next time we re-draw the chart

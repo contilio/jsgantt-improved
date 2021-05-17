@@ -21,7 +21,7 @@ export const includeGetSet = function () {
         this['set' + key.substr(1)](val);
       }
     }
-  }
+  };
   this.setUseFade = function (pVal) { this.vUseFade = pVal; };
   this.setUseMove = function (pVal) { this.vUseMove = pVal; };
   this.setUseRowHlt = function (pVal) { this.vUseRowHlt = pVal; };
@@ -126,8 +126,9 @@ export const includeGetSet = function () {
   this.setAdditionalHeaders = function (headers) { this.vAdditionalHeaders = headers; };
   this.setColumnOrder = function (order) { this.vColumnOrder = order; };
 
-  this.setEditable = function (editable) { this.vEditable = editable; }
-  this.setDebug = function (debug) { this.vDebug = debug; }
+  this.setEditable = function (editable) { this.vEditable = editable; };
+  this.setDebug = function (debug) { this.vDebug = debug; };
+  this.setCurDay = function (curDay) { this.curDay = curDay; };
 
   /**
    * GETTERS
@@ -192,6 +193,7 @@ export const includeGetSet = function () {
   this.getMaxDate = function () { return this.vMaxDate; };
   this.getTooltipDelay = function () { return this.vTooltipDelay; };
   this.getList = function () { return this.vTaskList; };
+  this.getCurDay = function () { return this.curDay; };
 
   //EVENTS
   this.getEventsClickCell = function () { return this.vEvents; };
@@ -202,4 +204,4 @@ export const includeGetSet = function () {
   this.getResources = function () { return this.vResources; };
   this.getAdditionalHeaders = function () { return this.vAdditionalHeaders; };
   this.getColumnOrder = function () { return this.vColumnOrder || COLUMN_ORDER; };
-}
+};
