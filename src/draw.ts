@@ -267,8 +267,7 @@ export const GanttChart = function (pDiv, pFormat) {
           const divTask = document.createElement('span');
           divTask.innerHTML = '\u00A0' + this.vTaskList[i].getName();
           vTmpDiv.appendChild(divTask);
-          // const text = makeInput(this.vTaskList[i].getName(), this.vEditable, 'text');
-          // vTmpDiv.appendChild(document.createNode(text));
+          vTmpDiv.setAttribute('title', this.vTaskList[i].getName());
           const callback = (task, e) => task.setName(e.target.value);
           addListenerInputCell(vTmpCell, this.vEventsChange, callback, this.vTaskList, i, 'taskname', this.Draw.bind(this));
           addListenerClickCell(vTmpDiv, this.vEvents, this.vTaskList[i], 'taskname');
@@ -276,7 +275,8 @@ export const GanttChart = function (pDiv, pFormat) {
         else {
           vCellContents += '\u00A0\u00A0\u00A0\u00A0';
           const text = makeInput(this.vTaskList[i].getName(), this.vEditable, 'text');
-          let vTmpDiv = newNode(vTmpCell, 'div', null, null, vCellContents + text);
+          let vTmpDiv: HTMLDivElement = newNode(vTmpCell, 'div', null, null, vCellContents + text);
+          vTmpDiv.setAttribute('title', this.vTaskList[i].getName());
           const callback = (task, e) => task.setName(e.target.value);
           addListenerInputCell(vTmpCell, this.vEventsChange, callback, this.vTaskList, i, 'taskname', this.Draw.bind(this));
           addListenerClickCell(vTmpCell, this.vEvents, this.vTaskList[i], 'taskname');
