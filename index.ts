@@ -1,6 +1,4 @@
-import
-  * as jsGantt
-  from './src/jsgantt';
+import * as jsGantt from './src/jsgantt';
 
 declare var module: any;
 module.exports = jsGantt.JSGantt;
