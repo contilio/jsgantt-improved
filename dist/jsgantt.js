@@ -3793,7 +3793,8 @@ exports.processRows = function (pList, pID, pRow, pLevel, pOpen, pUseSort, vDebu
         }
         pList[pRow].setNumKid(vNumKid);
         pList[pRow].setWeight(vWeight);
-        pList[pRow].setCompVal(Math.ceil(vCompSum / vWeight));
+        pList[pRow].setCompVal(Number(vCompSum / vWeight).toFixed(1));
+
     }
     if (pID == 0 && pUseSort == 1) {
         var bd = void 0;
