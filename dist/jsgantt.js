@@ -3133,6 +3133,7 @@ exports.sortTasks = function (pList, pID, pIdx) {
         return pIdx;
     }
     var sortIdx = pIdx;
+    var vSortByDate = false
     var sortArr = new Array();
     for (var i = 0; i < pList.length; i++) {
         if (pList[i].getParent() == pID)
@@ -3140,13 +3141,16 @@ exports.sortTasks = function (pList, pID, pIdx) {
     }
     if (sortArr.length > 0) {
         sortArr.sort(function (a, b) {
+            if(vSortByDate){
             var i = a.getStart().getTime() - b.getStart().getTime();
-            if (i == 0)
-                i = a.getEnd().getTime() - b.getEnd().getTime();
-            if (i == 0)
-                return a.getID() - b.getID();
-            else
-                return i;
+                if (i == 0)
+                    i = a.getEnd().getTime() - b.getEnd().getTime();
+                if (i == 0)
+                    return a.getID() - b.getID();
+                else
+                    return i;
+            }
+            return a.getID() - b.getID();
         });
     }
     for (var j = 0; j < sortArr.length; j++) {
