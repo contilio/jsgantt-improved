@@ -9,7 +9,7 @@ export const taskLink = function (pRef, pWidth, pHeight) {
   if (pWidth) vWidth = pWidth; else vWidth = 400;
   if (pHeight) vHeight = pHeight; else vHeight = 400;
 
-  window.open(pRef, 'newwin', 'height=' + vHeight + ',width=' + vWidth); // let OpenWindow = 
+  window.open(pRef, 'newwin', 'height=' + vHeight + ',width=' + vWidth); // let OpenWindow =
 };
 
 export const sortTasks = function (pList, pID, pIdx) {
@@ -17,6 +17,7 @@ export const sortTasks = function (pList, pID, pIdx) {
     return pIdx;
   }
   let sortIdx = pIdx;
+  let vSortByDate = false;
   let sortArr = new Array();
 
   for (let i = 0; i < pList.length; i++) {
@@ -25,10 +26,13 @@ export const sortTasks = function (pList, pID, pIdx) {
 
   if (sortArr.length > 0) {
     sortArr.sort(function (a, b) {
-      let i = a.getStart().getTime() - b.getStart().getTime();
-      if (i == 0) i = a.getEnd().getTime() - b.getEnd().getTime();
-      if (i == 0) return a.getID() - b.getID();
-      else return i;
+      if (vSortByDate) {
+        let i = a.getStart().getTime() - b.getStart().getTime();
+        if (i == 0) i = a.getEnd().getTime() - b.getEnd().getTime();
+        if (i == 0) return a.getID() - b.getID();
+        else return i;
+      }
+      return a.getID() - b.getID();
     });
   }
 
@@ -401,7 +405,7 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
 };
 
 /**
- * @param pTask 
+ * @param pTask
  * @param templateStrOrFn template string or function(task). In any case parameters in template string are substituted.
  *        If string - just a static template.
  *        If function(task): string - per task template. Can return null|undefined to fallback to default template.
@@ -637,7 +641,7 @@ export const processRows = function (pList, pID, pRow, pLevel, pOpen, pUseSort, 
     }
     pList[pRow].setNumKid(vNumKid);
     pList[pRow].setWeight(vWeight);
-    pList[pRow].setCompVal(Math.ceil(vCompSum / vWeight));
+    pList[pRow].setCompVal((vCompSum / vWeight).toFixed(1));
   }
 
   if (pID == 0 && pUseSort == 1) {

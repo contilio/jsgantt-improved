@@ -3126,14 +3126,14 @@ exports.taskLink = function (pRef, pWidth, pHeight) {
         vHeight = pHeight;
     else
         vHeight = 400;
-    window.open(pRef, 'newwin', 'height=' + vHeight + ',width=' + vWidth); // let OpenWindow = 
+    window.open(pRef, 'newwin', 'height=' + vHeight + ',width=' + vWidth); // let OpenWindow =
 };
 exports.sortTasks = function (pList, pID, pIdx) {
     if (pList.length < 2) {
         return pIdx;
     }
     var sortIdx = pIdx;
-    var vSortByDate = false
+    var vSortByDate = false;
     var sortArr = new Array();
     for (var i = 0; i < pList.length; i++) {
         if (pList[i].getParent() == pID)
@@ -3141,8 +3141,8 @@ exports.sortTasks = function (pList, pID, pIdx) {
     }
     if (sortArr.length > 0) {
         sortArr.sort(function (a, b) {
-            if(vSortByDate){
-            var i = a.getStart().getTime() - b.getStart().getTime();
+            if (vSortByDate) {
+                var i = a.getStart().getTime() - b.getStart().getTime();
                 if (i == 0)
                     i = a.getEnd().getTime() - b.getEnd().getTime();
                 if (i == 0)
@@ -3797,8 +3797,7 @@ exports.processRows = function (pList, pID, pRow, pLevel, pOpen, pUseSort, vDebu
         }
         pList[pRow].setNumKid(vNumKid);
         pList[pRow].setWeight(vWeight);
-        pList[pRow].setCompVal(Number(vCompSum / vWeight).toFixed(1));
-
+        pList[pRow].setCompVal((vCompSum / vWeight).toFixed(1));
     }
     if (pID == 0 && pUseSort == 1) {
         var bd = void 0;
