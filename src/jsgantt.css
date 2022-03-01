@@ -482,6 +482,7 @@ span.gfoldercollapse {
 
 .gCurDate {
   border-color: #0000ff;
+  border-width: 2px;
 }
 
 div.gtaskbarcontainer {
