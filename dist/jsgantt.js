@@ -3112,9 +3112,9 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.processRows = exports.ClearTasks = exports.RemoveTaskItem = exports.AddTaskItemObject = exports.AddTaskItem = exports.createTaskInfo = exports.TaskItem = exports.TaskItemObject = exports.sortTasks = exports.taskLink = void 0;
-var general_utils_1 = require("./utils/general_utils");
-var draw_utils_1 = require("./utils/draw_utils");
 var date_utils_1 = require("./utils/date_utils");
+var draw_utils_1 = require("./utils/draw_utils");
+var general_utils_1 = require("./utils/general_utils");
 // function to open window to display task link
 exports.taskLink = function (pRef, pWidth, pHeight) {
     var vWidth, vHeight;
@@ -3568,7 +3568,7 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
             pComp: vComp,
             pCost: vCost,
             pGroup: vGroup,
-            pDataObjec: vDataObject
+            pDataObject: vDataObject
         };
     };
 };
@@ -3680,6 +3680,7 @@ exports.AddTaskItem = function (value) {
         this.vTaskList.push(value);
         this.vProcessNeeded = true;
     }
+    return value;
 };
 exports.AddTaskItemObject = function (object) {
     if (!object.pGantt) {

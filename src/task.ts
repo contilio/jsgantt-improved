@@ -1,6 +1,6 @@
-import { isIE, stripUnwanted, internalPropertiesLang, hashKey, internalProperties } from "./utils/general_utils";
+import { formatDateStr, parseDateStr } from "./utils/date_utils";
 import { newNode } from "./utils/draw_utils";
-import { parseDateStr, formatDateStr } from "./utils/date_utils";
+import { hashKey, internalProperties, internalPropertiesLang, stripUnwanted } from "./utils/general_utils";
 declare let g: any;
 
 // function to open window to display task link
@@ -399,7 +399,7 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
       pComp: vComp,
       pCost: vCost,
       pGroup: vGroup,
-      pDataObjec: vDataObject
+      pDataObject: vDataObject
     };
   };
 };
@@ -512,6 +512,7 @@ export const AddTaskItem = function (value) {
     this.vTaskList.push(value);
     this.vProcessNeeded = true;
   }
+  return value;
 };
 
 export const AddTaskItemObject = function (object) {
