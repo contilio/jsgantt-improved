@@ -3129,11 +3129,11 @@ exports.taskLink = function (pRef, pWidth, pHeight) {
     window.open(pRef, 'newwin', 'height=' + vHeight + ',width=' + vWidth); // let OpenWindow =
 };
 exports.sortTasks = function (pList, pID, pIdx) {
+    var isGroupRegEx = /group/i;
     if (pList.length < 2) {
         return pIdx;
     }
     var sortIdx = pIdx;
-    var vSortByDate = false;
     var sortArr = new Array();
     for (var i = 0; i < pList.length; i++) {
         if (pList[i].getParent() == pID)
@@ -3141,23 +3141,31 @@ exports.sortTasks = function (pList, pID, pIdx) {
     }
     if (sortArr.length > 0) {
         sortArr.sort(function (a, b) {
-            if (vSortByDate) {
-                var i = a.getStart().getTime() - b.getStart().getTime();
-                if (i == 0)
-                    i = a.getEnd().getTime() - b.getEnd().getTime();
-                if (i == 0)
-                    return a.getID() - b.getID();
-                else
-                    return i;
+            var aIsGroup = isGroupRegEx.test(a.getClass());
+            var bIsGroup = isGroupRegEx.test(b.getClass());
+            // Both groups
+            if (aIsGroup && bIsGroup) {
+                return a.getID() - b.getID();
             }
-            return a.getID() - b.getID();
+            // One group, one task
+            if (aIsGroup !== bIsGroup) {
+                return aIsGroup ? 1 : -1;
+            }
+            // Both tasks
+            var i = a.getStart().getTime() - b.getStart().getTime();
+            if (i == 0)
+                i = a.getEnd().getTime() - b.getEnd().getTime();
+            if (i == 0)
+                return a.getID() - b.getID();
+            else
+                return i;
         });
     }
     for (var j = 0; j < sortArr.length; j++) {
-        for (var i = 0; i < pList.length; i++) {
-            if (pList[i].getID() == sortArr[j].getID()) {
-                pList[i].setSortIdx(sortIdx++);
-                sortIdx = exports.sortTasks(pList, pList[i].getID(), sortIdx);
+        for (var i_1 = 0; i_1 < pList.length; i_1++) {
+            if (pList[i_1].getID() == sortArr[j].getID()) {
+                pList[i_1].setSortIdx(sortIdx++);
+                sortIdx = exports.sortTasks(pList, pList[i_1].getID(), sortIdx);
             }
         }
     }

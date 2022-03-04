@@ -13,26 +13,39 @@ export const taskLink = function (pRef, pWidth, pHeight) {
 };
 
 export const sortTasks = function (pList, pID, pIdx) {
+  const isGroupRegEx = /group/i;
+
   if (pList.length < 2) {
     return pIdx;
   }
+
   let sortIdx = pIdx;
-  let vSortByDate = false;
   let sortArr = new Array();
 
-  for (let i = 0; i < pList.length; i++) {
+  for (var i = 0; i < pList.length; i++) {
     if (pList[i].getParent() == pID) sortArr.push(pList[i]);
   }
 
   if (sortArr.length > 0) {
     sortArr.sort(function (a, b) {
-      if (vSortByDate) {
-        let i = a.getStart().getTime() - b.getStart().getTime();
-        if (i == 0) i = a.getEnd().getTime() - b.getEnd().getTime();
-        if (i == 0) return a.getID() - b.getID();
-        else return i;
+      const aIsGroup = isGroupRegEx.test(a.getClass());
+      const bIsGroup = isGroupRegEx.test(b.getClass());
+
+      // Both groups
+      if (aIsGroup && bIsGroup) {
+        return a.getID() - b.getID();
       }
-      return a.getID() - b.getID();
+
+      // One group, one task
+      if (aIsGroup !== bIsGroup) {
+        return aIsGroup ? 1 : -1;
+      }
+
+      // Both tasks
+      let i = a.getStart().getTime() - b.getStart().getTime();
+      if (i == 0) i = a.getEnd().getTime() - b.getEnd().getTime();
+      if (i == 0) return a.getID() - b.getID();
+      else return i;
     });
   }
 
@@ -40,10 +53,11 @@ export const sortTasks = function (pList, pID, pIdx) {
     for (let i = 0; i < pList.length; i++) {
       if (pList[i].getID() == sortArr[j].getID()) {
         pList[i].setSortIdx(sortIdx++);
-        sortIdx = sortTasks(pList, pList[i].getID(), sortIdx);
+        sortIdx = exports.sortTasks(pList, pList[i].getID(), sortIdx);
       }
     }
   }
+
   return sortIdx;
 };
 
