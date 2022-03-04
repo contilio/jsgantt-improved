@@ -1108,7 +1108,7 @@ exports.DrawDependencies = function (vDebug) {
     // draw the current date line
     if (this.vTodayPx >= 0) {
         var tmpCurDate = this.sLine(this.vTodayPx, 0, this.vTodayPx, this.getChartTable().offsetHeight - 1, 'gCurDate');
-        tmpCurDate.scrollIntoView({ inline: 'center' });
+        // tmpCurDate.scrollIntoView({ inline: 'center' });
     }
 };
 
@@ -3375,7 +3375,7 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
     else if (vCompVal)
         return vCompVal + '%';
     else
-        return '0%'; };
+        return vStart && vEnd ? '0%' : ''; };
     this.getCompRestStr = function () { if (vComp)
         return (100 - vComp) + '%';
     else if (vCompVal)
