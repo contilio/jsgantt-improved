@@ -267,9 +267,10 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
     if (vMile) {
       vDuration = '-';
     }
-    else if (this.getDataObject().pPrecalculatedDuration != null) {
-      const hours = +this.getDataObject().pPrecalculatedDuration;
-      vDuration = calculateVDuration(pFormat, pLang, null, null, hours);
+    else if (this.getDataObject().pDuration != null) {
+      const hours = +this.getDataObject().pDuration;
+      const hoursPerDay = +this.getDataObject().pHoursPerDay;
+      vDuration = calculateVDuration(pFormat, pLang, null, null, hours, hoursPerDay);
     }
     else if (!vEnd && !vStart && vPlanStart && vPlanEnd) {
       return calculateVDuration(pFormat, pLang, this.getPlanStart(), this.getPlanEnd());
@@ -281,7 +282,7 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
     return vDuration;
   };
 
-  function calculateVDuration(pFormat, pLang, start, end, hours?) {
+  function calculateVDuration(pFormat, pLang, start, end, hours?, hoursPerDay?) {
     let vDuration;
     let vUnits = null;
     switch (pFormat) {
@@ -297,16 +298,16 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
     // }
     // let tmpPer = (getOffset(this.getStart(), vTaskEnd, 999, vUnits)) / 1000;
 
-    if (typeof hours !== 'number') {
-      hours = (end.getTime() - start.getTime()) / 1000 / 60 / 60;
-    }
+    if (typeof hours !== 'number') hours = (end.getTime() - start.getTime()) / 1000 / 60 / 60;
+    if (!hoursPerDay) hoursPerDay = 24;
+    let days = hours / hoursPerDay;
     let tmpPer;
     switch (vUnits) {
       case 'hour': tmpPer = Math.round(hours); vDuration = tmpPer + ' ' + ((tmpPer != 1) ? pLang['hrs'] : pLang['hr']); break;
-      case 'day': tmpPer = (hours / 24); vDuration = tmpPer.toFixed(1) + ' ' + ((tmpPer != 1) ? pLang['dys'] : pLang['dy']); break;
-      case 'week': tmpPer = (hours / 24 / 7); vDuration = tmpPer.toFixed(1) + ' ' + ((tmpPer != 1) ? pLang['wks'] : pLang['wk']); break;
-      case 'month': tmpPer = (hours / 24 / 7 / 4.35); vDuration = tmpPer.toFixed(1) + ' ' + ((tmpPer != 1) ? pLang['mths'] : pLang['mth']); break;
-      case 'quarter': tmpPer = (hours / 24 / 7 / 13); vDuration = tmpPer.toFixed(1) + ' ' + ((tmpPer != 1) ? pLang['qtrs'] : pLang['qtr']); break;
+      case 'day': tmpPer = (days); vDuration = tmpPer.toFixed(1) + ' ' + ((tmpPer != 1) ? pLang['dys'] : pLang['dy']); break;
+      case 'week': tmpPer = (days / 7); vDuration = tmpPer.toFixed(1) + ' ' + ((tmpPer != 1) ? pLang['wks'] : pLang['wk']); break;
+      case 'month': tmpPer = (days / 7 / 4.35); vDuration = tmpPer.toFixed(1) + ' ' + ((tmpPer != 1) ? pLang['mths'] : pLang['mth']); break;
+      case 'quarter': tmpPer = (days / 7 / 13); vDuration = tmpPer.toFixed(1) + ' ' + ((tmpPer != 1) ? pLang['qtrs'] : pLang['qtr']); break;
     }
     return vDuration;
   }
