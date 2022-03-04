@@ -3380,6 +3380,10 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
         if (vMile) {
             vDuration = '-';
         }
+        else if (this.getDataObject().pPrecalculatedDuration != null) {
+            var hours = +this.getDataObject().pPrecalculatedDuration;
+            vDuration = calculateVDuration(pFormat, pLang, null, null, hours);
+        }
         else if (!vEnd && !vStart && vPlanStart && vPlanEnd) {
             return calculateVDuration(pFormat, pLang, this.getPlanStart(), this.getPlanEnd());
         }
@@ -3391,7 +3395,7 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
         }
         return vDuration;
     };
-    function calculateVDuration(pFormat, pLang, start, end) {
+    function calculateVDuration(pFormat, pLang, start, end, hours) {
         var vDuration;
         var vUnits = null;
         switch (pFormat) {
@@ -3413,7 +3417,9 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
         //   vTaskEnd = new Date(vTaskEnd.getFullYear(), vTaskEnd.getMonth(), vTaskEnd.getDate() + 1, vTaskEnd.getHours(), vTaskEnd.getMinutes(), vTaskEnd.getSeconds());
         // }
         // let tmpPer = (getOffset(this.getStart(), vTaskEnd, 999, vUnits)) / 1000;
-        var hours = (end.getTime() - start.getTime()) / 1000 / 60 / 60;
+        if (typeof hours !== 'number') {
+            hours = (end.getTime() - start.getTime()) / 1000 / 60 / 60;
+        }
         var tmpPer;
         switch (vUnits) {
             case 'hour':
