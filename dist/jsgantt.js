@@ -1107,7 +1107,8 @@ exports.DrawDependencies = function (vDebug) {
     }
     // draw the current date line
     if (this.vTodayPx >= 0) {
-        this.sLine(this.vTodayPx, 0, this.vTodayPx, this.getChartTable().offsetHeight - 1, 'gCurDate');
+        var tmpCurDate = this.sLine(this.vTodayPx, 0, this.vTodayPx, this.getChartTable().offsetHeight - 1, 'gCurDate');
+        tmpCurDate.scrollIntoView({ inline: 'center' });
     }
 };
 
