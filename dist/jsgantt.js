@@ -3360,7 +3360,7 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
         return '\u00A0'; };
     this.getCompVal = function () {
         if (this.getDataObject().pComp != null) {
-            return this.getDataObject.pComp;
+            return +this.getDataObject.pComp;
         }
         else {
             if (vComp)
@@ -3371,18 +3371,8 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
                 return 0;
         }
     };
-    this.getCompStr = function () { if (vComp)
-        return vComp.toFixed(1) + '%';
-    else if (vCompVal)
-        return vCompVal.toFixed(1) + '%';
-    else
-        return '0.0%'; };
-    this.getCompRestStr = function () { if (vComp)
-        return (100 - vComp) + '%';
-    else if (vCompVal)
-        return (100 - vCompVal) + '%';
-    else
-        return ''; };
+    this.getCompStr = function () { return this.getCompVal().toFixed(1) + '%'; };
+    this.getCompRestStr = function () { return (100 - this.getCompVal()).toFixed(1) + '%'; };
     this.getNotes = function () { return vNotes; };
     this.getSortIdx = function () { return vSortIdx; };
     this.getToDelete = function () { return vToDelete; };
