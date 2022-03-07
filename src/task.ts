@@ -124,7 +124,7 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
 
   let vParent = parent;
 
-  let vOpen = (vGroup == 2) ? 1 : parseInt(document.createTextNode(pOpen).data);
+  let vOpen = (vGroup == 2 || pOpen === undefined) ? 1 : parseInt(document.createTextNode(pOpen).data);
   let vDepend = new Array();
   let vDependType = new Array();
   let vCaption = document.createTextNode(pCaption).data;
