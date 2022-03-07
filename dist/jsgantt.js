@@ -585,10 +585,6 @@ exports.GanttChart = function (pDiv, pFormat) {
                         }
                         this.vTaskList[i].setTaskDiv(vTmpDiv2);
                     }
-                    // Hade tasks bars with no start and end dates
-                    if (!(this.vTaskList[i].getStart() && this.vTaskList[i].getEnd())) {
-                        this.vTaskList[i].getTaskDiv().classList.add('ghidden');
-                    }
                     // PLANNED
                     // If exist and one of them are different, show plan bar... show if there is no real vStart as well (just plan dates)
                     if (vTaskPlanLeftPx && ((vTaskPlanLeftPx != vTaskLeftPx_1 || vTaskPlanRightPx != vTaskRightPx) || !this.vTaskList[i].getStartVar())) {
@@ -3388,8 +3384,13 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
         }
         else if (this.getDataObject().pDuration != null) {
             var hours = +this.getDataObject().pDuration;
-            var hoursPerDay = +this.getDataObject().pHoursPerDay;
-            vDuration = calculateVDuration(pFormat, pLang, null, null, hours, hoursPerDay);
+            if (hours) {
+                var hoursPerDay = +this.getDataObject().pHoursPerDay;
+                vDuration = calculateVDuration(pFormat, pLang, null, null, hours, hoursPerDay);
+            }
+            else {
+                vDuration = '-';
+            }
         }
         else if (!vEnd && !vStart && vPlanStart && vPlanEnd) {
             return calculateVDuration(pFormat, pLang, this.getPlanStart(), this.getPlanEnd());
@@ -3468,7 +3469,14 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
     this.getVisible = function () { return vVisible; };
     this.getParItem = function () { return vParItem; };
     this.getCellDiv = function () { return vCellDiv; };
-    this.getBarDiv = function () { return vBarDiv; };
+    this.getBarDiv = function () {
+        if (vBarDiv) {
+            this.getStartVar() && this.getEndVar()
+                ? vBarDiv.classList.remove('ghidden')
+                : vBarDiv.classList.add('ghidden');
+        }
+        return vBarDiv;
+    };
     this.getTaskDiv = function () { return vTaskDiv; };
     this.getPlanTaskDiv = function () { return vPlanTaskDiv; };
     this.getChildRow = function () { return vChildRow; };

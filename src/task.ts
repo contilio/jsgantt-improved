@@ -269,8 +269,12 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
     }
     else if (this.getDataObject().pDuration != null) {
       const hours = +this.getDataObject().pDuration;
-      const hoursPerDay = +this.getDataObject().pHoursPerDay;
-      vDuration = calculateVDuration(pFormat, pLang, null, null, hours, hoursPerDay);
+      if (hours) {
+        const hoursPerDay = +this.getDataObject().pHoursPerDay;
+        vDuration = calculateVDuration(pFormat, pLang, null, null, hours, hoursPerDay);
+      } else {
+        vDuration = '-';
+      }
     }
     else if (!vEnd && !vStart && vPlanStart && vPlanEnd) {
       return calculateVDuration(pFormat, pLang, this.getPlanStart(), this.getPlanEnd());
@@ -326,7 +330,15 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
   this.getVisible = function () { return vVisible; };
   this.getParItem = function () { return vParItem; };
   this.getCellDiv = function () { return vCellDiv; };
-  this.getBarDiv = function () { return vBarDiv; };
+  this.getBarDiv = function () {
+    if (vBarDiv) {
+      this.getStartVar() && this.getEndVar()
+        ? vBarDiv.classList.remove('ghidden')
+        : vBarDiv.classList.add('ghidden')
+        ;
+    }
+    return vBarDiv;
+  };
   this.getTaskDiv = function () { return vTaskDiv; };
   this.getPlanTaskDiv = function () { return vPlanTaskDiv; };
   this.getChildRow = function () { return vChildRow; };
