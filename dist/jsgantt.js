@@ -772,6 +772,7 @@ exports.GanttChart = function (pDiv, pFormat) {
             var vScrollPx = 0;
             if (((_a = this.vScrollTo) === null || _a === void 0 ? void 0 : _a.substr(0, 2)) == 'px') {
                 vScrollPx = parseInt(this.vScrollTo.substr(2));
+                this.getChartBody().scrollLeft = vScrollPx;
             }
             else {
                 if (this.vScrollTo === 'today') {
@@ -787,9 +788,9 @@ exports.GanttChart = function (pDiv, pFormat) {
                     vScrollDate.setMinutes(0, 0, 0);
                 else
                     vScrollDate.setHours(0, 0, 0, 0);
-                vScrollPx = general_utils_1.getOffset(vMinDate, vScrollDate, vColWidth, this.vFormat, this.vShowWeekends) - 30;
+                vScrollPx = general_utils_1.getOffset(vMinDate, vScrollDate, vColWidth, this.vFormat, this.vShowWeekends);
+                this.getChartBody().scrollLeft = vScrollPx - (this.getChartBody().offsetWidth / 2);
             }
-            this.getChartBody().scrollLeft = vScrollPx;
         }
         if (vMinDate.getTime() <= today.getTime() && vMaxDate.getTime() >= today.getTime()) {
             this.vTodayPx = general_utils_1.getOffset(vMinDate, today, vColWidth, this.vFormat, this.vShowWeekends);
@@ -3389,7 +3390,7 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
                 vDuration = calculateVDuration(pFormat, pLang, null, null, hours, hoursPerDay);
             }
             else {
-                vDuration = '-';
+                vDuration = '';
             }
         }
         else if (!vEnd && !vStart && vPlanStart && vPlanEnd) {

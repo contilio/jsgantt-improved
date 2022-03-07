@@ -273,7 +273,7 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
         const hoursPerDay = +this.getDataObject().pHoursPerDay;
         vDuration = calculateVDuration(pFormat, pLang, null, null, hours, hoursPerDay);
       } else {
-        vDuration = '-';
+        vDuration = '';
       }
     }
     else if (!vEnd && !vStart && vPlanStart && vPlanEnd) {
