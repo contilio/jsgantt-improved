@@ -26,7 +26,7 @@ const COLUMNS_TYPES = {
   'vShowPlanEndDate': 'planenddate',
   'vShowCost': 'cost',
   'vShowAddEntries': 'addentries'
-}
+};
 
 export const draw_header = function (column, i, vTmpRow, vTaskList, vEditable, vEventsChange, vEvents,
   vDateTaskTableDisplayFormat, vAdditionalHeaders, vFormat, vLangs, vLang, vResources, Draw) {
@@ -52,7 +52,7 @@ export const draw_header = function (column, i, vTmpRow, vTaskList, vEditable, v
     vTmpCell = newNode(vTmpRow, 'td', null, 'gcomp');
     const text = makeInput(vTaskList[i].getCompStr(), vEditable, 'percentage', vTaskList[i].getCompVal());
     vTmpDiv = newNode(vTmpCell, 'div', null, null, text);
-    const callback = (task, e) => { task.setComp(e.target.value); task.setCompVal(e.target.value); }
+    const callback = (task, e) => { task.setComp(e.target.value); task.setCompVal(e.target.value); };
     addListenerInputCell(vTmpCell, vEventsChange, callback, vTaskList, i, 'comp', Draw);
     addListenerClickCell(vTmpCell, vEvents, vTaskList[i], 'comp');
   }
@@ -106,8 +106,9 @@ export const draw_header = function (column, i, vTmpRow, vTaskList, vEditable, v
       const header = vAdditionalHeaders[key];
       const css = header.class ? header.class : `gadditional-${key}`;
       const data = vTaskList[i].getDataObject();
+      const formattedValue = data ? (typeof data[key] === 'number' ? data[key].toLocaleString() : data[key]) : '';
       vTmpCell = newNode(vTmpRow, 'td', null, `gadditional ${css}`);
-      vTmpDiv = newNode(vTmpCell, 'div', null, null, data ? data[key] : '');
+      vTmpDiv = newNode(vTmpCell, 'div', null, null, formattedValue);
       addListenerClickCell(vTmpCell, vEvents, vTaskList[i], `additional_${key}`);
       // const callback = (task, e) => task.setCost(e.target.value);
       // addListenerInputCell(vTmpCell, vEventsChange, callback, vTaskList, i, 'costdate');
@@ -123,7 +124,7 @@ export const draw_header = function (column, i, vTmpRow, vTaskList, vEditable, v
       AddTaskItemObject({
         vParent: task.getParent()
       });
-    }
+    };
     addListenerInputCell(vTmpCell, vEventsChange, callback, vTaskList, i, 'addentries', Draw.bind(this));
     addListenerClickCell(vTmpCell, vEvents, vTaskList[i], 'addentries');
   }
@@ -140,7 +141,7 @@ export const draw_bottom = function (column, vTmpRow, vAdditionalHeaders) {
     const type = COLUMNS_TYPES[column];
     newNode(vTmpRow, 'td', null, `gspanning g${type}`, '\u00A0');
   }
-}
+};
 
 // export const draw_list_headings = function (column, vTmpRow, vAdditionalHeaders, vEvents) {
 //   let nodeCreated;
@@ -172,4 +173,4 @@ export const draw_task_headings = function (column, vTmpRow, vLangs, vLang, vAdd
     nodeCreated = newNode(vTmpRow, 'td', null, `gtaskheading g${type}`, vLangs[vLang][type]);
     addListenerClickCell(nodeCreated, vEvents, { hader: true, column }, type);
   }
-}
+};
