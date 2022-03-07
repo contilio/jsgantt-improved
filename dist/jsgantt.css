@@ -491,6 +491,10 @@ div.gtaskbarcontainer {
   top: 0px
 }
 
+div.ghidden {
+  display: none;
+}
+
 .textbar {
   word-break: break-all;
   white-space: nowrap;

@@ -585,6 +585,10 @@ exports.GanttChart = function (pDiv, pFormat) {
                         }
                         this.vTaskList[i].setTaskDiv(vTmpDiv2);
                     }
+                    // Hade tasks bars with no start and end dates
+                    if (!(this.vTaskList[i].getStart() && this.vTaskList[i].getEnd())) {
+                        this.vTaskList[i].getTaskDiv().classList.add('ghidden');
+                    }
                     // PLANNED
                     // If exist and one of them are different, show plan bar... show if there is no real vStart as well (just plan dates)
                     if (vTaskPlanLeftPx && ((vTaskPlanLeftPx != vTaskLeftPx_1 || vTaskPlanRightPx != vTaskRightPx) || !this.vTaskList[i].getStartVar())) {
@@ -3368,7 +3372,7 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
     else if (vCompVal)
         return vCompVal.toFixed(1) + '%';
     else
-        return vStart && vEnd ? '0.0%' : ''; };
+        return '0.0%'; };
     this.getCompRestStr = function () { if (vComp)
         return (100 - vComp) + '%';
     else if (vCompVal)

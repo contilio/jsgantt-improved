@@ -652,6 +652,10 @@ export const GanttChart = function (pDiv, pFormat) {
             this.vTaskList[i].setTaskDiv(vTmpDiv2);
           }
 
+          // Hade tasks bars with no start and end dates
+          if (!(this.vTaskList[i].getStart() && this.vTaskList[i].getEnd())) {
+            this.vTaskList[i].getTaskDiv().classList.add('ghidden');
+          }
 
           // PLANNED
           // If exist and one of them are different, show plan bar... show if there is no real vStart as well (just plan dates)
