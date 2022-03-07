@@ -690,6 +690,7 @@ exports.GanttChart = function (pDiv, pFormat) {
      *  vTaskRightPx,vTaskWidth,vTaskPlanLeftPx,vTaskPlanRightPx,vID
      */
     this.Draw = function () {
+        var _a;
         var vMaxDate = new Date();
         var vMinDate = new Date();
         var vColWidth = 0;
@@ -728,11 +729,11 @@ exports.GanttChart = function (pDiv, pFormat) {
         /**
          * LIST BODY
         */
-        var _a = this.drawListBody(vLeftHeader), vNumRows = _a.vNumRows, vTmpContentTabWrapper = _a.vTmpContentTabWrapper;
+        var _b = this.drawListBody(vLeftHeader), vNumRows = _b.vNumRows, vTmpContentTabWrapper = _b.vTmpContentTabWrapper;
         /**
          * CHART HEAD
          */
-        var _b = this.drawChartHead(vMinDate, vMaxDate, vColWidth, vNumRows), gChartLbl = _b.gChartLbl, vTaskLeftPx = _b.vTaskLeftPx, vSingleCell = _b.vSingleCell, vRightHeader = _b.vRightHeader, vDateRow = _b.vDateRow, vNumCols = _b.vNumCols;
+        var _c = this.drawChartHead(vMinDate, vMaxDate, vColWidth, vNumRows), gChartLbl = _c.gChartLbl, vTaskLeftPx = _c.vTaskLeftPx, vSingleCell = _c.vSingleCell, vRightHeader = _c.vRightHeader, vDateRow = _c.vDateRow, vNumCols = _c.vNumCols;
         /**
          * CHART GRID
          */
@@ -762,23 +763,19 @@ exports.GanttChart = function (pDiv, pFormat) {
         }
         vTmpDiv2.style.visibility = 'hidden';
         this.setLines(vTmpDiv2);
-        /* Quick hack to show the generated HTML on older browsers
-              let tmpGenSrc=document.createElement('textarea');
-              tmpGenSrc.appendChild(document.createTextNode(vTmpDiv.innerHTML));
-              vDiv.appendChild(tmpGenSrc);
-        //*/
         // LISTENERS: Now all the content exists, register scroll listeners
         events_1.addScrollListeners(this);
+        var today = this.getToday() ? new Date(this.getToday()) : new Date();
         // SCROLL: now check if we are actually scrolling the pane
         if (this.vScrollTo != '') {
             var vScrollDate = new Date(vMinDate.getTime());
             var vScrollPx = 0;
-            if (this.vScrollTo.substr && this.vScrollTo.substr(0, 2) == 'px') {
+            if (((_a = this.vScrollTo) === null || _a === void 0 ? void 0 : _a.substr(0, 2)) == 'px') {
                 vScrollPx = parseInt(this.vScrollTo.substr(2));
             }
             else {
                 if (this.vScrollTo === 'today') {
-                    vScrollDate = new Date();
+                    vScrollDate = new Date(today);
                 }
                 else if (this.vScrollTo instanceof Date) {
                     vScrollDate = this.vScrollTo;
@@ -794,11 +791,8 @@ exports.GanttChart = function (pDiv, pFormat) {
             }
             this.getChartBody().scrollLeft = vScrollPx;
         }
-        if (vMinDate.getTime() <= (new Date(this.getCurDay())).getTime() && vMaxDate.getTime() >= (new Date(this.getCurDay())).getTime()) {
-            this.vTodayPx = general_utils_1.getOffset(vMinDate, new Date(this.getCurDay()), vColWidth, this.vFormat, this.vShowWeekends);
-        }
-        else if (vMinDate.getTime() <= (new Date()).getTime() && vMaxDate.getTime() >= (new Date()).getTime()) {
-            this.vTodayPx = general_utils_1.getOffset(vMinDate, new Date(), vColWidth, this.vFormat, this.vShowWeekends);
+        if (vMinDate.getTime() <= today.getTime() && vMaxDate.getTime() >= today.getTime()) {
+            this.vTodayPx = general_utils_1.getOffset(vMinDate, today, vColWidth, this.vFormat, this.vShowWeekends);
         }
         else {
             this.vTodayPx = -1;
@@ -1107,8 +1101,7 @@ exports.DrawDependencies = function (vDebug) {
     }
     // draw the current date line
     if (this.vTodayPx >= 0) {
-        var tmpCurDate = this.sLine(this.vTodayPx, 0, this.vTodayPx, this.getChartTable().offsetHeight - 1, 'gCurDate');
-        // tmpCurDate.scrollIntoView({ inline: 'center' });
+        this.sLine(this.vTodayPx, 0, this.vTodayPx, this.getChartTable().offsetHeight - 1, 'gToday');
     }
 };
 
@@ -3023,7 +3016,7 @@ exports.includeGetSet = function () {
     this.setColumnOrder = function (order) { this.vColumnOrder = order; };
     this.setEditable = function (editable) { this.vEditable = editable; };
     this.setDebug = function (debug) { this.vDebug = debug; };
-    this.setCurDay = function (curDay) { this.curDay = curDay; };
+    this.setToday = function (today) { this.vToday = today; };
     /**
      * GETTERS
      */
@@ -3087,7 +3080,7 @@ exports.includeGetSet = function () {
     this.getMaxDate = function () { return this.vMaxDate; };
     this.getTooltipDelay = function () { return this.vTooltipDelay; };
     this.getList = function () { return this.vTaskList; };
-    this.getCurDay = function () { return this.curDay; };
+    this.getToday = function () { return this.vToday; };
     //EVENTS
     this.getEventsClickCell = function () { return this.vEvents; };
     this.getEventsChange = function () { return this.vEventsChange; };
@@ -3371,11 +3364,11 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
     else
         return 0; };
     this.getCompStr = function () { if (vComp)
-        return vComp + '%';
+        return vComp.toFixed(1) + '%';
     else if (vCompVal)
-        return vCompVal + '%';
+        return vCompVal.toFixed(1) + '%';
     else
-        return vStart && vEnd ? '0%' : ''; };
+        return vStart && vEnd ? '0.0%' : ''; };
     this.getCompRestStr = function () { if (vComp)
         return (100 - vComp) + '%';
     else if (vCompVal)
@@ -3984,12 +3977,15 @@ exports.parseDateStr = function (pDateStr, pFormatStr) {
             case 'dd/mm/yyyy':
                 vDate = new Date(vDateParts[2], vDateParts[1] - 1, vDateParts[0], vDateParts[3], vDateParts[4]);
                 break;
-            case 'yyyy-mm-dd':
-                vDate = new Date(vDateParts[0], vDateParts[1] - 1, vDateParts[2], vDateParts[3], vDateParts[4]);
+            default:
+                vDate = new Date(pDateStr);
                 break;
-            case 'yyyy-mm-dd HH:MI:SS':
-                vDate = new Date(vDateParts[0], vDateParts[1] - 1, vDateParts[2], vDateParts[3], vDateParts[4], vDateParts[5]);
-                break;
+            // case 'yyyy-mm-dd':
+            //   vDate = new Date(vDateParts[0], vDateParts[1] - 1, vDateParts[2], vDateParts[3], vDateParts[4]);
+            //   break;
+            // case 'yyyy-mm-dd HH:MI:SS':
+            //   vDate = new Date(vDateParts[0], vDateParts[1] - 1, vDateParts[2], vDateParts[3], vDateParts[4], vDateParts[5]);
+            //   break;
         }
     }
     return (vDate);

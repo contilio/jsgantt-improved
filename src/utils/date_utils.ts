@@ -106,7 +106,7 @@ export const coerceDate = function (date) {
       return temp;
     }
   }
-}
+};
 
 export const parseDateStr = function (pDateStr, pFormatStr) {
   let vDate = new Date();
@@ -121,12 +121,15 @@ export const parseDateStr = function (pDateStr, pFormatStr) {
       case 'dd/mm/yyyy':
         vDate = new Date(vDateParts[2], vDateParts[1] - 1, vDateParts[0], vDateParts[3], vDateParts[4]);
         break;
-      case 'yyyy-mm-dd':
-        vDate = new Date(vDateParts[0], vDateParts[1] - 1, vDateParts[2], vDateParts[3], vDateParts[4]);
+      default:
+        vDate = new Date(pDateStr);
         break;
-      case 'yyyy-mm-dd HH:MI:SS':
-        vDate = new Date(vDateParts[0], vDateParts[1] - 1, vDateParts[2], vDateParts[3], vDateParts[4], vDateParts[5]);
-        break;
+      // case 'yyyy-mm-dd':
+      //   vDate = new Date(vDateParts[0], vDateParts[1] - 1, vDateParts[2], vDateParts[3], vDateParts[4]);
+      //   break;
+      // case 'yyyy-mm-dd HH:MI:SS':
+      //   vDate = new Date(vDateParts[0], vDateParts[1] - 1, vDateParts[2], vDateParts[3], vDateParts[4], vDateParts[5]);
+      //   break;
     }
   }
   return (vDate);
@@ -261,7 +264,7 @@ export const parseDateFormatStr = function (pFormatStr) {
 /**
  * We have to compare against the monday of the first week of the year containing 04 jan *not* 01/01
  * 60*60*24*1000=86400000
- * @param pDate 
+ * @param pDate
  */
 export const getIsoWeek = function (pDate) {
   let dayMiliseconds = 86400000;

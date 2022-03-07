@@ -845,27 +845,22 @@ export const GanttChart = function (pDiv, pFormat) {
     vTmpDiv2.style.visibility = 'hidden';
     this.setLines(vTmpDiv2);
 
-    /* Quick hack to show the generated HTML on older browsers
-          let tmpGenSrc=document.createElement('textarea');
-          tmpGenSrc.appendChild(document.createTextNode(vTmpDiv.innerHTML));
-          vDiv.appendChild(tmpGenSrc);
-    //*/
-
-
     // LISTENERS: Now all the content exists, register scroll listeners
     addScrollListeners(this);
+
+    const today = this.getToday() ? new Date(this.getToday()) : new Date();
 
     // SCROLL: now check if we are actually scrolling the pane
     if (this.vScrollTo != '') {
       let vScrollDate = new Date(vMinDate.getTime());
       let vScrollPx = 0;
 
-      if (this.vScrollTo.substr && this.vScrollTo.substr(0, 2) == 'px') {
+      if (this.vScrollTo?.substr(0, 2) == 'px') {
         vScrollPx = parseInt(this.vScrollTo.substr(2));
       }
       else {
         if (this.vScrollTo === 'today') {
-          vScrollDate = new Date();
+          vScrollDate = new Date(today);
         } else if (this.vScrollTo instanceof Date) {
           vScrollDate = this.vScrollTo;
         } else {
@@ -874,15 +869,14 @@ export const GanttChart = function (pDiv, pFormat) {
 
         if (this.vFormat == 'hour') vScrollDate.setMinutes(0, 0, 0);
         else vScrollDate.setHours(0, 0, 0, 0);
+
         vScrollPx = getOffset(vMinDate, vScrollDate, vColWidth, this.vFormat, this.vShowWeekends) - 30;
       }
       this.getChartBody().scrollLeft = vScrollPx;
     }
 
-    if (vMinDate.getTime() <= (new Date(this.getCurDay())).getTime() && vMaxDate.getTime() >= (new Date(this.getCurDay())).getTime()) {
-      this.vTodayPx = getOffset(vMinDate, new Date(this.getCurDay()), vColWidth, this.vFormat, this.vShowWeekends);
-    } else if (vMinDate.getTime() <= (new Date()).getTime() && vMaxDate.getTime() >= (new Date()).getTime()) {
-      this.vTodayPx = getOffset(vMinDate, new Date(), vColWidth, this.vFormat, this.vShowWeekends);
+    if (vMinDate.getTime() <= today.getTime() && vMaxDate.getTime() >= today.getTime()) {
+      this.vTodayPx = getOffset(vMinDate, today, vColWidth, this.vFormat, this.vShowWeekends);
     } else {
       this.vTodayPx = -1;
     }

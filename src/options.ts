@@ -3,7 +3,7 @@ import { COLUMN_ORDER } from "./draw_columns";
 
 export const includeGetSet = function () {
   /**
-   * SETTERS 
+   * SETTERS
    */
   this.setOptions = function (options) {
     const keys = Object.keys(options);
@@ -128,7 +128,7 @@ export const includeGetSet = function () {
 
   this.setEditable = function (editable) { this.vEditable = editable; };
   this.setDebug = function (debug) { this.vDebug = debug; };
-  this.setCurDay = function (curDay) { this.curDay = curDay; };
+  this.setToday = function (today) { this.vToday = today; };
 
   /**
    * GETTERS
@@ -193,7 +193,7 @@ export const includeGetSet = function () {
   this.getMaxDate = function () { return this.vMaxDate; };
   this.getTooltipDelay = function () { return this.vTooltipDelay; };
   this.getList = function () { return this.vTaskList; };
-  this.getCurDay = function () { return this.curDay; };
+  this.getToday = function () { return this.vToday; };
 
   //EVENTS
   this.getEventsClickCell = function () { return this.vEvents; };
