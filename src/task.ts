@@ -257,7 +257,13 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
   this.getDepType = function () { if (vDependType) return vDependType; else return null; };
   this.getCaption = function () { if (vCaption) return vCaption; else return ''; };
   this.getResource = function () { if (vRes) return vRes; else return '\u00A0'; };
-  this.getCompVal = function () { if (vComp) return vComp; else if (vCompVal) return vCompVal; else return 0; };
+  this.getCompVal = function () {
+    if (this.getDataObject().pComp != null) {
+      return this.getDataObject.pComp;
+    } else {
+      if (vComp) return vComp; else if (vCompVal) return vCompVal; else return 0;
+    }
+  };
   this.getCompStr = function () { if (vComp) return vComp.toFixed(1) + '%'; else if (vCompVal) return vCompVal.toFixed(1) + '%'; else return '0.0%'; };
   this.getCompRestStr = function () { if (vComp) return (100 - vComp) + '%'; else if (vCompVal) return (100 - vCompVal) + '%'; else return ''; };
   this.getNotes = function () { return vNotes; };

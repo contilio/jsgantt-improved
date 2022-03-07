@@ -3358,12 +3358,19 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
         return vRes;
     else
         return '\u00A0'; };
-    this.getCompVal = function () { if (vComp)
-        return vComp;
-    else if (vCompVal)
-        return vCompVal;
-    else
-        return 0; };
+    this.getCompVal = function () {
+        if (this.getDataObject().pComp != null) {
+            return this.getDataObject.pComp;
+        }
+        else {
+            if (vComp)
+                return vComp;
+            else if (vCompVal)
+                return vCompVal;
+            else
+                return 0;
+        }
+    };
     this.getCompStr = function () { if (vComp)
         return vComp.toFixed(1) + '%';
     else if (vCompVal)
