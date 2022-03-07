@@ -3360,7 +3360,7 @@ exports.TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile, pRe
         return '\u00A0'; };
     this.getCompVal = function () {
         if (this.getDataObject().pComp != null) {
-            return +this.getDataObject.pComp;
+            return +this.getDataObject().pComp;
         }
         else {
             if (vComp)

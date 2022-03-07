@@ -259,7 +259,7 @@ export const TaskItem = function (pID, pName, pStart, pEnd, pClass, pLink, pMile
   this.getResource = function () { if (vRes) return vRes; else return '\u00A0'; };
   this.getCompVal = function () {
     if (this.getDataObject().pComp != null) {
-      return +this.getDataObject.pComp;
+      return +this.getDataObject().pComp;
     } else {
       if (vComp) return vComp; else if (vCompVal) return vCompVal; else return 0;
     }
